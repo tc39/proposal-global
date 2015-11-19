@@ -3,7 +3,7 @@ ES7 Proposal, specs, and reference implementation for `System.global`
 
 Spec drafted by [@ljharb](https://github.com/ljharb).
 
-This proposal is currently seeking [stage 0](https://github.com/tc39/ecma262) of the [process](https://tc39.github.io/process-document/).
+This proposal is currently [stage 1](https://github.com/tc39/ecma262) of the [process](https://tc39.github.io/process-document/).
 
 ## Rationale
 It is difficult to write portable ECMAScript code which accesses the global object. On the web, it is accessible as `window` or `self` or `frames`; on node.js, it is `global`; neither of those is available in a shell like V8's `d8` or `jsc`. In a standalone function call in sloppy mode, it is `this`; in strict code within a function, that can still be accessed by `Function('return this')()`, but that form is inaccessible with some CSP settings, such as within Chrome Apps. Below is some code from the wild to get the global object, passed in as the single argument to an IIFE, which works for most cases but won't actually work in d8 when in strict mode inside a function (it could be fixed using the new Function trick):
@@ -41,6 +41,9 @@ ES6/ES2015 does not account for the `Window`/`WindowProxy` structure, and simply
 ## SES interaction
 
 For Secure ECMAScript, it is important that all references to the global object be spoof-able and capable of being locked down, so that each context gets its own shadow global context. Additionally, references to the global object should not be reachable from other ECMAScript intrinsic objects, which SES would like to simply recursively freeze. In this proposal, `global` is a non-writable, but configurable property of the `System` built-in object, so it should meet SES requirements.
+
+## Naming
+There is desire to reify one of the existing global property names, particularly `global` or `window`, instead of `System.global`. Further research will be done to determine if either of these two options will or will not break existing code doing runtime environment detection.
 
 ## Spec
 You can view the spec in [markdown format](spec.md) or rendered as [HTML](http://ljharb.github.io/proposal-global/).
