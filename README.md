@@ -46,4 +46,4 @@ For Secure ECMAScript, it is important that all references to the global object 
 There is desire to reify one of the existing global property names, particularly `global` or `window`, instead of `System.global`. Further research will be done to determine if either of these two options will or will not break existing code doing runtime environment detection.
 
 ## Spec
-You can view the spec in [markdown format](spec.md) or rendered as [HTML](http://ljharb.github.io/proposal-global/).
+You can view the spec in [markdown format](spec.md) or rendered as [HTML](http://tc39.github.io/proposal-global/).
