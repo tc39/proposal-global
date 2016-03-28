@@ -10,7 +10,7 @@ It is difficult to write portable ECMAScript code which accesses the global obje
 ```js
 // If we're in a browser, the global namespace is named 'window'. If we're
 // in node, it's named 'global'. If we're in a shell, 'this' might work.
-})(typeof window !== "undefined"
+(typeof window !== "undefined"
    ? window
    : (typeof process === 'object' &&
       typeof require === 'function' &&
