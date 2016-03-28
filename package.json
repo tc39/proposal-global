@@ -1,7 +1,7 @@
 {
 	"name": "ecma-proposal-global",
 	"version": "0.0.0",
-	"description": "ES7 spec proposal for System.global",
+	"description": "ECMAScript spec proposal for System.global",
 	"scripts": {
 		"build": "ecmarkup spec.emu --js=spec.js --css=spec.css | js-beautify -f - --type=html -t > index.html",
 		"prepublish": "npm run build && echo >&2 'no publishing' && exit 255"
@@ -18,6 +18,8 @@
 		"System.global",
 		"ES7",
 		"ES2016",
+		"ECMAScript",
+		"ESNext",
 		"spec",
 		"proposal"
 	],

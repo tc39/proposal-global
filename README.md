@@ -1,5 +1,5 @@
 # [System.global]()
-ES7 Proposal, specs, and reference implementation for `System.global`
+ECMAScript Proposal, specs, and reference implementation for `System.global`
 
 Spec drafted by [@ljharb](https://github.com/ljharb).
 
