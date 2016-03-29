@@ -10,7 +10,7 @@
       <tr>
         <td>%SyntaxErrorPrototype%</td>
         <td><code>SyntaxError.prototype</code></td>
-        <td>The initial value of the <code>prototype</code> property of %SyntaxError%</td>
+        <td>…</td>
       </tr>
       <tr>
         <td>%System%</td>
@@ -22,7 +22,7 @@
       <tr>
         <td>%ThrowTypeError%</td>
         <td></td>
-        <td>A function object that unconditionally throws a new instance of %TypeError%</td>
+        <td>…</td>
       </tr>
     </tbody>
   </table>

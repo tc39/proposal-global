@@ -5,7 +5,7 @@
 <script src="./spec.js"></script>
 <pre class="metadata">
 title: System.global
-stage: 1
+stage: 2
 contributors: Jordan Harband
 </pre>
 <emu-table id="table-7" caption="Well-known Intrinsic Objects">
@@ -19,7 +19,7 @@ contributors: Jordan Harband
 			<tr>
 				<td>%SyntaxErrorPrototype%</td>
 				<td><code>SyntaxError.prototype</code></td>
-				<td>The initial value of the <code>prototype</code> property of %SyntaxError%</td>
+				<td>…</td>
 			</tr>
 			<tr>
 				<td>%System%</td>
@@ -31,7 +31,7 @@ contributors: Jordan Harband
 			<tr>
 				<td>%ThrowTypeError%</td>
 				<td></td>
-				<td>A function object that unconditionally throws a new instance of %TypeError%</td>
+				<td>…</td>
 			</tr>
 		</tbody>
 	</table>
