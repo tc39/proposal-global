@@ -47,3 +47,6 @@ There is desire to reify one of the existing global property names, particularly
 
 ## Spec
 You can view the spec in [markdown format](spec.md) or rendered as [HTML](http://tc39.github.io/proposal-global/).
+
+## Thanks
+Originally inspired by https://twitter.com/littledan/status/627284720284372992 / http://littledan.github.io/global.html
