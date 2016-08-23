@@ -8,7 +8,7 @@ body {
 }
 
 body.oldtoc {
-  margin: 0 auto;
+  margin: 0 0 0 150px;
 }
 
 a {
@@ -90,6 +90,12 @@ emu-eqn div:first-child {
   margin-left: -2em;
 }
 
+emu-eqn.inline {
+  display: inline;
+  margin: 0;
+  white-space: nowrap;
+}
+
 emu-note {
     display: block;
     margin: 1em 0 1em 6em;
@@ -117,7 +123,6 @@ emu-production {
     display: block;
     margin-top: 1em;
     margin-bottom: 1em;
-    margin-left: 5ex;
 }
 
 
@@ -348,7 +353,7 @@ table.lightweight-table td, table.lightweight-table th {
 }
 
 /* diff styles */
-ins {
+ins, tr.ins > td, li.ins {
     background-color: #e0f8e0;
     text-decoration: none;
     border-bottom: 1px solid #396;
@@ -358,12 +363,22 @@ ins.block {
     display: block;
 }
 
-del {
+del, tr.del > td, li.del {
     background-color: #fee;
+    text-decoration: line-through;
 }
 
 del.block {
     display: block;
+}
+
+tr.ins > td > ins, li.ins > ins {
+  border: 0;
+}
+
+/* Grammar Diff Styles */
+emu-grammar > ins, emu-grammar > del, emu-production > ins, emu-production > del {
+  display: block;
 }
 
 /* Menu Styles */
@@ -537,4 +552,82 @@ del.block {
   h1 .secnum:empty {
     margin: 0; padding: 0;
   }
+}
+
+@media print {
+  /* hide anchor and other utils */
+  span.utils {
+    display: none;
+  }
+
+  emu-annex > h1 {
+    text-align: center;
+  }
+
+  emu-annex > h1 .secnum {
+    display: block;
+    position: inherit;
+    right: inherit;
+    text-align: center;
+    margin-right: 0;
+  }
+
+  emu-annex > h1 .secnum::before {
+    content: "Annex ";
+  }
+
+  emu-annex[normative] > h1::after {
+    content: "(normative)";
+    display: block;
+    font-weight: normal;
+    color: #666;
+  }
+
+  emu-annex:not([normative]) > h1::after {
+    content: "(informative)";
+    font-weight: normal;
+    display: block;
+    color: #666;
+  }
+
+  /* reset styles on nested annexes */
+  emu-annex emu-annex > h1 {
+    text-align: left;
+  }
+
+  emu-annex emu-annex h1::after {
+    content: none !important;
+  }
+
+  emu-annex emu-annex > h1 .secnum {
+    position: absolute;
+    right: 100%;
+    text-align: right;
+    margin-right: 1ex;
+  }
+
+  emu-annex emu-annex > h1 .secnum::before {
+    content: none;
+  }
+
+  /* page break controls */
+  emu-intro > h1,
+  emu-annex > h1,
+  emu-toc div {
+    page-break-before: always;
+  }
+
+  /* turn off page breaks in nested clauses */
+  emu-intro emu-intro > h1,
+  emu-annex emu-annex > h1 {
+    page-break-before: auto;
+  }
+
+  h1, h2, h3, h4, h5,
+  emu-figure > figure,
+  emu-table > figure,
+  emu-table > table {
+    page-break-inside: avoid;
+  }
+
 }
