@@ -42,7 +42,7 @@ The abstract operation SetRealmGlobalObject with arguments `realmRec`, `globalOb
     1. Let `globalObj` be ObjectCreate(`intrinsics`.[[%ObjectPrototype%]]).
   1. Assert: Type(`globalObj`) is Object.
   1. If `thisValue` is **undefined**, let `thisValue` be `globalObj`.
-  1. Set `intrinsics`[[%GlobalThisValue%]] to `thisValue`.
+  1. Set `intrinsics`.[[%GlobalThisValue%]] to `thisValue`.
   1. Set `realmRec`.[[GlobalObject]] to `globalObj`.
   1. Let `newGlobalEnv` be NewGlobalEnvironment(`globalObj`, `thisValue`).
   1. Set `realmRec`.[[GlobalEnv]] to `newGlobalEnv`.
