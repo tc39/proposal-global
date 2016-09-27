@@ -4,48 +4,12 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
 <script src="./spec.js"></script>
 <pre class="metadata">
-title: System.global
+title: global
 stage: 2
 contributors: Jordan Harband
 </pre>
-<emu-table id="table-7" caption="Well-known Intrinsic Objects">
-	<table>
-		<tbody>
-			<tr>
-				<th>Intrinsic Name</th>
-				<th>Global Name</th>
-				<th>ECMAScript Language Association</th>
-			</tr>
-			<tr>
-				<td>%SyntaxErrorPrototype%</td>
-				<td><code>SyntaxError.prototype</code></td>
-				<td>…</td>
-			</tr>
-			<tr>
-				<td>%System%</td>
-				<td><code>System</code></td>
-				<td>
-					The <code>System</code> object (<emu-xref href="#sec-system-object"><a href="#sec-system-object">1</a></emu-xref>)
-				</td>
-			</tr>
-			<tr>
-				<td>%ThrowTypeError%</td>
-				<td></td>
-				<td>…</td>
-			</tr>
-		</tbody>
-	</table>
-</emu-table>
-
-<emu-clause id="sec-system-object">
-	<h1>The System Object</h1>
-	<p>The System object is the %System% intrinsic object and the initial value of the `System` property of the global object. The System object is an ordinary object.</p>
-	<p>The value of the [[Prototype]] internal slot of the System object is the intrinsic object %ObjectPrototype% (<emu-xref href="#sec-properties-of-the-object-prototype-object"></emu-xref>).</p>
-	<p>The System object is not a function object. It does not have a [[Construct]] internal method; it is not possible to use the System object as a constructor with the `new` operator. The System object also does not have a [[Call]] internal method; it is not possible to invoke the System object as a function.</p>
-
-	<emu-clause id="sec-system-global">
-		<h1>System.global</h1>
-		<p>This is a data property with an initial value of the global object.</p>
-		<p>This property has the attributes { [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *true* }.</p>
-	</emu-clause>
+<h1>Other Properties of the Global Object</h1>
+<emu-clause id="sec-other-properties-of-the-global-object-global">
+  <h1>global</h1>
+  <p>The initial value of `global` is the global object. This property has the attributes { [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *true* }.</p>
 </emu-clause>
