@@ -9,13 +9,46 @@
 	<script type="application/json" id="menu-search-biblio">
 		[{
 			"type": "clause",
-			"id": "sec-other-properties-of-the-global-object-global",
+			"id": "",
 			"aoid": null,
-			"title": "global",
+			"title": "Other Properties of the Global Object",
 			"number": "1",
 			"namespace": "<no location>",
 			"location": "",
+			"key": "Other Properties of the Global Object"
+		}, {
+			"type": "clause",
+			"id": "sec-other-properties-of-the-global-object-global",
+			"aoid": null,
+			"title": "global",
+			"number": "1.1",
+			"namespace": "<no location>",
+			"location": "",
 			"key": "global"
+		}, {
+			"type": "clause",
+			"id": "",
+			"aoid": null,
+			"title": "Well-Known Intrinsic Objects",
+			"number": "2",
+			"namespace": "<no location>",
+			"location": "",
+			"key": "Well-Known Intrinsic Objects"
+		}, {
+			"type": "op",
+			"aoid": "SetRealmGlobalObject",
+			"refId": "sec-setrealmglobalobject",
+			"location": "",
+			"key": "SetRealmGlobalObject"
+		}, {
+			"type": "clause",
+			"id": "sec-setrealmglobalobject",
+			"aoid": "SetRealmGlobalObject",
+			"title": "SetRealmGlobalObject ( _realmRec_, _globalObj_, _thisValue_ )",
+			"number": "3",
+			"namespace": "<no location>",
+			"location": "",
+			"key": "SetRealmGlobalObject ( _realmRec_, _globalObj_, _thisValue_ )"
 		}, {
 			"type": "clause",
 			"id": "sec-copyright-and-software-license",
@@ -25,6 +58,21 @@
 			"namespace": "<no location>",
 			"location": "",
 			"key": "Copyright & Software License"
+		}, {
+			"type": "table",
+			"id": "table-7",
+			"number": 1,
+			"caption": "Table 1: Well-known Intrinsic Objects",
+			"namespace": "<no location>",
+			"location": "",
+			"key": "Table 1: Well-known Intrinsic Objects"
+		}, {
+			"type": "term",
+			"term": "%GlobalThisValue%",
+			"refId": "sec-other-properties-of-the-global-object-global",
+			"namespace": "<no location>",
+			"location": "",
+			"key": "%GlobalThisValue%"
 		}]
 	</script>
 </head>
@@ -37,22 +85,100 @@
 		</div>
 		<div id="menu-toc">
 			<ol class="toc">
-				<li><span class="item-toggle-none"></span><a href="#sec-other-properties-of-the-global-object-global" title="global"><span class="secnum">1</span> global</a></li>
+				<li><span class="item-toggle">◢</span><a href="#" title="Other Properties of the Global Object"><span class="secnum">1</span> Other Properties of the Global Object</a>
+					<ol class="toc">
+						<li><span class="item-toggle-none"></span><a href="#sec-other-properties-of-the-global-object-global" title="global"><span class="secnum">1.1</span> global</a></li>
+					</ol>
+				</li>
+				<li><span class="item-toggle-none"></span><a href="#" title="Well-Known Intrinsic Objects"><span class="secnum">2</span> Well-Known Intrinsic Objects</a></li>
+				<li><span class="item-toggle-none"></span><a href="#sec-setrealmglobalobject" title="SetRealmGlobalObject ( _realmRec_, _globalObj_, _thisValue_ )"><span class="secnum">3</span> SetRealmGlobalObject ( <var>realmRec</var>, <var>globalObj</var>, <var>thisValue</var> )</a></li>
 				<li><span class="item-toggle-none"></span><a href="#sec-copyright-and-software-license" title="Copyright &amp; Software License"><span class="secnum">A</span> Copyright &amp; Software License</a></li>
 			</ol>
 		</div>
 	</div>
 	<h1 class="version">Stage 2 Draft / September 27, 2016</h1>
 	<h1 class="title">global</h1>
-	<h1>Other Properties of the Global Object</h1>
-	<emu-clause id="sec-other-properties-of-the-global-object-global">
-		<h1><span class="secnum">1</span>global<span class="utils"><span class="anchor"><a href="#sec-other-properties-of-the-global-object-global">#</a></span></span></h1>
-		<p>The initial value of <code>global</code> is the result of performing
-			<emu-xref aoid="ResolveThisBinding"><a href="https://tc39.github.io/ecma262/#sec-resolvethisbinding">ResolveThisBinding</a></emu-xref>().</p>
-		<p>This property has the attributes { [[Writable]]:
-			<emu-val>true</emu-val>, [[Enumerable]]:
-			<emu-val>false</emu-val>, [[Configurable]]:
-			<emu-val>true</emu-val> }.</p>
+	<emu-clause>
+		<h1><span class="secnum">1</span>Other Properties of the Global Object<span class="utils"><span class="anchor"><a href="#">#</a></span></span></h1>
+		<emu-clause id="sec-other-properties-of-the-global-object-global">
+			<h1><span class="secnum">1.1</span>global<span class="utils"><span class="anchor"><a href="#sec-other-properties-of-the-global-object-global">#</a></span></span></h1>
+			<p>The initial value of <code>global</code> is the well-known intrinsic object <dfn>%GlobalThisValue%</dfn>.</p>
+			<p>This property has the attributes { [[Writable]]:
+				<emu-val>true</emu-val>, [[Enumerable]]:
+				<emu-val>false</emu-val>, [[Configurable]]:
+				<emu-val>true</emu-val> }.</p>
+		</emu-clause>
+	</emu-clause>
+
+	<emu-clause>
+		<h1><span class="secnum">2</span>Well-Known Intrinsic Objects<span class="utils"><span class="anchor"><a href="#">#</a></span></span></h1>
+		<emu-table id="table-7" caption="Well-known Intrinsic Objects">
+			<figure>
+				<figcaption>Table 1: Well-known Intrinsic Objects</figcaption>
+				<table>
+					<tbody>
+						<tr>
+							<th>Intrinsic Name</th>
+							<th>Global Name</th>
+							<th>ECMAScript Language Association</th>
+						</tr>
+						<tr>
+							<td>
+								<emu-xref href="#sec-properties-of-generator-prototype"><a href="https://tc39.github.io/ecma262/#sec-properties-of-generator-prototype">%GeneratorPrototype%</a></emu-xref>
+							</td>
+							<td></td>
+							<td>The initial value of the <code>prototype</code> property of %Generator%</td>
+						</tr>
+						<tr>
+							<td>
+								<emu-xref href="#sec-other-properties-of-the-global-object-global"><a href="#sec-other-properties-of-the-global-object-global">%GlobalThisValue%</a></emu-xref>
+							</td>
+							<td><code>global</code></td>
+							<td>The initial value of the <code>global</code> property of the
+								<emu-xref href="#global-object"><a href="https://tc39.github.io/ecma262/#global-object">global object</a></emu-xref>
+							</td>
+						</tr>
+						<tr>
+							<td>%Int8Array%</td>
+							<td><code>Int8Array</code></td>
+							<td>The <code>Int8Array</code> constructor (
+								<emu-xref href="#sec-typedarray-objects"><a href="https://tc39.github.io/ecma262/#sec-typedarray-objects">22.2</a></emu-xref>)</td>
+						</tr>
+					</tbody>
+				</table>
+			</figure>
+		</emu-table>
+	</emu-clause>
+
+	<!-- es6num="8.2.3" -->
+	<emu-clause id="sec-setrealmglobalobject" aoid="SetRealmGlobalObject">
+		<h1><span class="secnum">3</span>SetRealmGlobalObject ( <var>realmRec</var>, <var>globalObj</var>, <var>thisValue</var> )<span class="utils"><span class="anchor"><a href="#sec-setrealmglobalobject">#</a></span></span></h1>
+		<p>The abstract operation SetRealmGlobalObject with arguments <var>realmRec</var>, <var>globalObj</var>, and <var>thisValue</var> performs the following steps:</p>
+		<emu-alg>
+			<ol>
+				<li>Let <var>intrinsics</var> be <var>realmRec</var>.[[Intrinsics]].</li>
+				<li>If <var>globalObj</var> is
+					<emu-val>undefined</emu-val>, then
+					<ol>
+						<li>Let <var>globalObj</var> be
+							<emu-xref aoid="ObjectCreate"><a href="https://tc39.github.io/ecma262/#sec-objectcreate">ObjectCreate</a></emu-xref>(<var>intrinsics</var>.[[
+							<emu-xref href="#sec-properties-of-the-object-prototype-object"><a href="https://tc39.github.io/ecma262/#sec-properties-of-the-object-prototype-object">%ObjectPrototype%</a></emu-xref>]]).</li>
+					</ol>
+				</li>
+				<li>Assert:
+					<emu-xref aoid="Type"><a href="https://tc39.github.io/ecma262/#sec-ecmascript-data-types-and-values">Type</a></emu-xref>(<var>globalObj</var>) is Object.</li>
+				<li>If <var>thisValue</var> is
+					<emu-val>undefined</emu-val>, let <var>thisValue</var> be <var>globalObj</var>.</li>
+				<li>Set <var>intrinsics</var>[[
+					<emu-xref href="#sec-other-properties-of-the-global-object-global"><a href="#sec-other-properties-of-the-global-object-global">%GlobalThisValue%</a></emu-xref>]] to <var>thisValue</var>.</li>
+				<li>Set <var>realmRec</var>.[[GlobalObject]] to <var>globalObj</var>.</li>
+				<li>Let <var>newGlobalEnv</var> be
+					<emu-xref aoid="NewGlobalEnvironment"><a href="https://tc39.github.io/ecma262/#sec-newglobalenvironment">NewGlobalEnvironment</a></emu-xref>(<var>globalObj</var>, <var>thisValue</var>).</li>
+				<li>Set <var>realmRec</var>.[[GlobalEnv]] to <var>newGlobalEnv</var>.</li>
+				<li>Return <var>realmRec</var>.
+				</li>
+			</ol>
+		</emu-alg>
 	</emu-clause>
 	<emu-annex id="sec-copyright-and-software-license">
 		<h1><span class="secnum">A</span>Copyright &amp; Software License<span class="utils"><span class="anchor"><a href="#sec-copyright-and-software-license">#</a></span></span></h1>

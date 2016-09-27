@@ -8,9 +8,59 @@ title: global
 stage: 2
 contributors: Jordan Harband
 </pre>
-<h1>Other Properties of the Global Object</h1>
-<emu-clause id="sec-other-properties-of-the-global-object-global">
-  <h1>global</h1>
-  <p>The initial value of `global` is the result of performing ResolveThisBinding().</p>
-  <p>This property has the attributes { [[Writable]]: *true*, [[Enumerable]]: *false*, [[Configurable]]: *true* }.</p>
+<emu-clause>
+	<h1>Other Properties of the Global Object</h1>
+	<emu-clause id="sec-other-properties-of-the-global-object-global">
+		<h1>global</h1>
+		<p>The initial value of `global` is the well-known intrinsic object <dfn>%GlobalThisValue%</dfn>.</p>
+		<p>This property has the attributes { [[Writable]]: *true*, [[Enumerable]]: *false*, [[Configurable]]: *true* }.</p>
+	</emu-clause>
+</emu-clause>
+
+<emu-clause>
+	<h1>Well-Known Intrinsic Objects</h1>
+	<emu-table id="table-7" caption="Well-known Intrinsic Objects">
+		<table>
+			<tbody>
+				<tr>
+					<th>Intrinsic Name</th>
+					<th>Global Name</th>
+					<th>ECMAScript Language Association</th>
+				</tr>
+				<tr>
+					<td>%GeneratorPrototype%</td>
+					<td></td>
+					<td>The initial value of the <code>prototype</code> property of %Generator%</td>
+				</tr>
+				<tr>
+					<td>%GlobalThisValue%</td>
+					<td><code>global</code></td>
+					<td>The initial value of the <code>global</code> property of the global object</td>
+				</tr>
+				<tr>
+					<td>%Int8Array%</td>
+					<td><code>Int8Array</code></td>
+					<td>The <code>Int8Array</code> constructor (<emu-xref href="#sec-typedarray-objects"></emu-xref>)</td>
+				</tr>
+			</tbody>
+		</table>
+	</emu-table>
+</emu-clause>
+
+<!-- es6num="8.2.3" -->
+<emu-clause id="sec-setrealmglobalobject" aoid="SetRealmGlobalObject">
+	<h1>SetRealmGlobalObject ( _realmRec_, _globalObj_, _thisValue_ )</h1>
+	<p>The abstract operation SetRealmGlobalObject with arguments _realmRec_, _globalObj_, and _thisValue_ performs the following steps:</p>
+	<emu-alg>
+		1. Let _intrinsics_ be _realmRec_.[[Intrinsics]].
+		1. If _globalObj_ is *undefined*, then
+			1. Let _globalObj_ be ObjectCreate(_intrinsics_.[[%ObjectPrototype%]]).
+		1. Assert: Type(_globalObj_) is Object.
+		1. If _thisValue_ is *undefined*, let _thisValue_ be _globalObj_.
+		1. Set _intrinsics_[[%GlobalThisValue%]] to _thisValue_.
+		1. Set _realmRec_.[[GlobalObject]] to _globalObj_.
+		1. Let _newGlobalEnv_ be NewGlobalEnvironment(_globalObj_, _thisValue_).
+		1. Set _realmRec_.[[GlobalEnv]] to _newGlobalEnv_.
+		1. Return _realmRec_.
+	</emu-alg>
 </emu-clause>
