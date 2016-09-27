@@ -47,8 +47,9 @@
 	<h1>Other Properties of the Global Object</h1>
 	<emu-clause id="sec-other-properties-of-the-global-object-global">
 		<h1><span class="secnum">1</span>global<span class="utils"><span class="anchor"><a href="#sec-other-properties-of-the-global-object-global">#</a></span></span></h1>
-		<p>The initial value of <code>global</code> is the
-			<emu-xref href="#global-object"><a href="https://tc39.github.io/ecma262/#global-object">global object</a></emu-xref>. This property has the attributes { [[Writable]]:
+		<p>The initial value of <code>global</code> is the result of performing
+			<emu-xref aoid="ResolveThisBinding"><a href="https://tc39.github.io/ecma262/#sec-resolvethisbinding">ResolveThisBinding</a></emu-xref>().</p>
+		<p>This property has the attributes { [[Writable]]:
 			<emu-val>false</emu-val>, [[Enumerable]]:
 			<emu-val>false</emu-val>, [[Configurable]]:
 			<emu-val>true</emu-val> }.</p>
