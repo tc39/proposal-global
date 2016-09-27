@@ -69,6 +69,10 @@ Menu.prototype.initSearch = function () {
     this.biblio = JSON.parse($biblio.textContent);
   }
 
+  this.biblio.ops = this.biblio.filter(function (e) { return e.type === 'op' });
+  this.biblio.clauses = this.biblio.filter(function (e) { return e.type === 'clause' });
+  this.biblio.productions = this.biblio.filter(function (e) { return e.type === 'production' });
+
   document.addEventListener('keydown', function (e) {
     if (e.keyCode === 191) {
       e.preventDefault();
@@ -99,25 +103,19 @@ Menu.prototype.search = function (needle) {
   var results = {};
   var seenClauses = {};
 
-  results.ops = Object.keys(this.biblio.ops).map(function (k) {
-    return this.biblio.ops[k];
-  }.bind(this)).filter(function(op) {
+  results.ops = this.biblio.ops.filter(function(op) {
     return fuzzysearch(needle, op.aoid.toLowerCase());
   });
 
   results.ops.forEach(function(op) {
-    seenClauses[op.id] = true;
+    seenClauses[op.refId] = true;
   });
 
-  results.productions = Object.keys(this.biblio.productions).map(function (k) {
-    return this.biblio.productions[k];
-  }.bind(this)).filter(function(prod) {
+  results.productions = this.biblio.productions.filter(function(prod) {
     return fuzzysearch(needle, prod.name.toLowerCase());
   });
 
-  results.clauses = Object.keys(this.biblio.clauses).map(function (k) {
-    return this.biblio.clauses[k];
-  }.bind(this)).filter(function(clause) {
+  results.clauses = this.biblio.clauses.filter(function(clause) {
     return !seenClauses[clause.id] && (clause.number.indexOf(needle) === 0 || fuzzysearch(needle, clause.title.toLowerCase()));
   });
 
@@ -137,7 +135,7 @@ Menu.prototype.displayResults = function (results) {
     var html = '<ul>';
 
     results.ops.forEach(function (op) {
-      html += '<li class=menu-search-result-op><a href="#' + op.id + '">' + op.aoid + '</a></li>'
+      html += '<li class=menu-search-result-op><a href="#' + op.refId + '">' + op.aoid + '</a></li>'
     });
 
     results.productions.forEach(function (prod) {

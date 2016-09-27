@@ -5,79 +5,53 @@
 	<link rel="stylesheet" href="./spec.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
 	<script src="./spec.js"></script>
-	<title>System.global</title>
-	<script type="application/json" id="menu-search-biblio">{"clauses":{"sec-system-object":{"location":"","id":"sec-system-object","aoid":null,"title":"The System Object","number":"1"},"sec-system-global":{"location":"","id":"sec-system-global","aoid":null,"title":"System.global","number":"1.1"},"sec-copyright-and-software-license":{"location":"","id":"sec-copyright-and-software-license","aoid":null,"title":"Copyright & Software License","number":"A"}},"ops":{},"productions":{},"terms":{},"examples":{},"notes":{},"tables":{"table-7":{"location":"","id":"table-7","number":1}},"figures":{}}</script>
+	<title>global</title>
+	<script type="application/json" id="menu-search-biblio">
+		[{
+			"type": "clause",
+			"id": "sec-other-properties-of-the-global-object-global",
+			"aoid": null,
+			"title": "global",
+			"number": "1",
+			"namespace": "<no location>",
+			"location": "",
+			"key": "global"
+		}, {
+			"type": "clause",
+			"id": "sec-copyright-and-software-license",
+			"aoid": null,
+			"title": "Copyright & Software License",
+			"number": "A",
+			"namespace": "<no location>",
+			"location": "",
+			"key": "Copyright & Software License"
+		}]
+	</script>
 </head>
 
 <body>
 	<div id="menu-toggle">☰</div>
 	<div id="menu">
-		<div id="menu-search">
-			<input type="text" id="menu-search-box" placeholder="Search...">
+		<div id="menu-search"><input type="text" id="menu-search-box" placeholder="Search...">
 			<div id="menu-search-results" class="inactive"></div>
 		</div>
 		<div id="menu-toc">
 			<ol class="toc">
-				<li><span class="item-toggle">◢</span><a href="#sec-system-object" title="The System Object"><span class="secnum">1</span> The System Object</a>
-					<ol class="toc">
-						<li><span class="item-toggle-none"></span><a href="#sec-system-global" title="System.global"><span class="secnum">1.1</span> System.global</a></li>
-					</ol>
-				</li>
+				<li><span class="item-toggle-none"></span><a href="#sec-other-properties-of-the-global-object-global" title="global"><span class="secnum">1</span> global</a></li>
 				<li><span class="item-toggle-none"></span><a href="#sec-copyright-and-software-license" title="Copyright &amp; Software License"><span class="secnum">A</span> Copyright &amp; Software License</a></li>
 			</ol>
 		</div>
 	</div>
-	<h1 class="version">Stage 2 Draft / March 29, 2016</h1>
-	<h1 class="title">System.global</h1>
-	<emu-table id="table-7" caption="Well-known Intrinsic Objects">
-		<figure>
-			<figcaption>Table 1: Well-known Intrinsic Objects</figcaption>
-			<table>
-				<tbody>
-					<tr>
-						<th>Intrinsic Name</th>
-						<th>Global Name</th>
-						<th>ECMAScript Language Association</th>
-					</tr>
-					<tr>
-						<td>%SyntaxErrorPrototype%</td>
-						<td><code>SyntaxError.prototype</code></td>
-						<td>…</td>
-					</tr>
-					<tr>
-						<td>%System%</td>
-						<td><code>System</code></td>
-						<td>
-							The <code>System</code> object (
-							<emu-xref href="#sec-system-object">
-								<a href="#sec-system-object"></a><a href="#sec-system-object">1</a></emu-xref>)
-						</td>
-					</tr>
-					<tr>
-						<td>%ThrowTypeError%</td>
-						<td></td>
-						<td>…</td>
-					</tr>
-				</tbody>
-			</table>
-		</figure>
-	</emu-table>
-
-	<emu-clause id="sec-system-object">
-		<h1><span class="secnum">1</span>The System Object<span class="utils"><span class="anchor"><a href="#sec-system-object">#</a></span></span></h1>
-		<p>The System object is the %System% intrinsic object and the initial value of the <code>System</code> property of the global object. The System object is an ordinary object.</p>
-		<p>The value of the [[Prototype]] internal slot of the System object is the intrinsic object %ObjectPrototype% (
-			<emu-xref href="#sec-properties-of-the-object-prototype-object"><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-properties-of-the-object-prototype-object">19.1.3</a></emu-xref>).</p>
-		<p>The System object is not a function object. It does not have a [[Construct]] internal method; it is not possible to use the System object as a constructor with the <code>new</code> operator. The System object also does not have a [[Call]] internal method; it is not possible to invoke the System object as a function.</p>
-
-		<emu-clause id="sec-system-global">
-			<h1><span class="secnum">1.1</span>System.global<span class="utils"><span class="anchor"><a href="#sec-system-global">#</a></span></span></h1>
-			<p>This is a data property with an initial value of the global object.</p>
-			<p>This property has the attributes { [[Writable]]:
-				<emu-val>false</emu-val>, [[Enumerable]]:
-				<emu-val>false</emu-val>, [[Configurable]]:
-				<emu-val>true</emu-val> }.</p>
-		</emu-clause>
+	<h1 class="version">Stage 2 Draft / September 27, 2016</h1>
+	<h1 class="title">global</h1>
+	<h1>Other Properties of the Global Object</h1>
+	<emu-clause id="sec-other-properties-of-the-global-object-global">
+		<h1><span class="secnum">1</span>global<span class="utils"><span class="anchor"><a href="#sec-other-properties-of-the-global-object-global">#</a></span></span></h1>
+		<p>The initial value of <code>global</code> is the
+			<emu-xref href="#global-object"><a href="https://tc39.github.io/ecma262/#global-object">global object</a></emu-xref>. This property has the attributes { [[Writable]]:
+			<emu-val>false</emu-val>, [[Enumerable]]:
+			<emu-val>false</emu-val>, [[Configurable]]:
+			<emu-val>true</emu-val> }.</p>
 	</emu-clause>
 	<emu-annex id="sec-copyright-and-software-license">
 		<h1><span class="secnum">A</span>Copyright &amp; Software License<span class="utils"><span class="anchor"><a href="#sec-copyright-and-software-license">#</a></span></span></h1>
