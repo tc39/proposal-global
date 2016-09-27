@@ -12,5 +12,5 @@ contributors: Jordan Harband
 <emu-clause id="sec-other-properties-of-the-global-object-global">
   <h1>global</h1>
   <p>The initial value of `global` is the result of performing ResolveThisBinding().</p>
-  <p>This property has the attributes { [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *true* }.</p>
+  <p>This property has the attributes { [[Writable]]: *true*, [[Enumerable]]: *false*, [[Configurable]]: *true* }.</p>
 </emu-clause>
