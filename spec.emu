@@ -33,9 +33,9 @@ contributors: Jordan Harband
 					<td>The initial value of the <code>prototype</code> property of %Generator%</td>
 				</tr>
 				<tr>
-					<td>%GlobalThisValue%</td>
-					<td><code>global</code></td>
-					<td>The initial value of the <code>global</code> property of the global object</td>
+					<td><ins>%GlobalThisValue%</ins></td>
+					<td><ins><code>global</code></ins></td>
+					<td><ins>The initial value of the <code>global</code> property of the global object</ins></td>
 				</tr>
 				<tr>
 					<td>%Int8Array%</td>
@@ -52,12 +52,13 @@ contributors: Jordan Harband
 	<h1>SetRealmGlobalObject ( _realmRec_, _globalObj_, _thisValue_ )</h1>
 	<p>The abstract operation SetRealmGlobalObject with arguments _realmRec_, _globalObj_, and _thisValue_ performs the following steps:</p>
 	<emu-alg>
-		1. Let _intrinsics_ be _realmRec_.[[Intrinsics]].
+		1. <ins>Let _intrinsics_ be _realmRec_.[[Intrinsics]].</ins>
 		1. If _globalObj_ is *undefined*, then
+			1. <del>Let _intrinsics_ be _realmRec_.[[Intrinsics]].</del>
 			1. Let _globalObj_ be ObjectCreate(_intrinsics_.[[%ObjectPrototype%]]).
 		1. Assert: Type(_globalObj_) is Object.
 		1. If _thisValue_ is *undefined*, let _thisValue_ be _globalObj_.
-		1. Set _intrinsics_.[[%GlobalThisValue%]] to _thisValue_.
+		1. <ins>Set _intrinsics_.[[%GlobalThisValue%]] to _thisValue_.</ins>
 		1. Set _realmRec_.[[GlobalObject]] to _globalObj_.
 		1. Let _newGlobalEnv_ be NewGlobalEnvironment(_globalObj_, _thisValue_).
 		1. Set _realmRec_.[[GlobalEnv]] to _newGlobalEnv_.
