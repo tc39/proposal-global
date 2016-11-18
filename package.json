@@ -31,7 +31,7 @@
 	"homepage": "https://github.com/ljharb/proposal-global#readme",
 	"dependencies": {},
 	"devDependencies": {
-		"ecmarkup": "^3.5.1",
+		"ecmarkup": "^3.7.1",
 		"js-beautify": "^1.6.4"
 	}
 }

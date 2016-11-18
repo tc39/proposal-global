@@ -1,31 +1,230 @@
 "use strict";
 
+function Search(menu) {
+  this.menu = menu;
+  this.$search = document.getElementById('menu-search');
+  this.$searchBox = document.getElementById('menu-search-box');
+  this.$searchResults = document.getElementById('menu-search-results');
+  
+  this.loadBiblio();
+  
+  document.addEventListener('keydown', this.documentKeydown.bind(this));
+  
+  this.$searchBox.addEventListener('keydown', debounce(this.searchBoxKeydown.bind(this), { stopPropagation: true }));
+  this.$searchBox.addEventListener('keyup', debounce(this.searchBoxKeyup.bind(this), { stopPropagation: true }));
+}
+
+Search.prototype.loadBiblio = function () {
+  var $biblio = document.getElementById('menu-search-biblio');
+  if (!$biblio) {
+    this.biblio = {};
+  } else {
+    this.biblio = JSON.parse($biblio.textContent);
+    this.biblio.clauses = this.biblio.filter(e => e.type === 'clause');
+    this.biblio.clausesById = this.biblio.clauses.reduce((map, entry) => {
+      map[entry.id] = entry;
+      return map;
+    }, {});
+  }
+}
+
+Search.prototype.documentKeydown = function (e) {
+  if (e.keyCode === 191) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.triggerSearch();
+  }
+}
+
+Search.prototype.searchBoxKeydown = function (e) {
+  e.stopPropagation();
+  e.preventDefault();
+  if (e.keyCode === 191 && e.target.value.length === 0) {
+    e.preventDefault();
+  } else if (e.keyCode === 13) {
+    e.preventDefault();
+    this.selectResult();
+  }
+}
+
+Search.prototype.searchBoxKeyup = function (e) {
+  if (e.keyCode === 13 || e.keyCode === 9) {
+    return;
+  }
+  
+  this.search(e.target.value);
+}
+
+
+Search.prototype.triggerSearch = function (e) {
+  if (this.menu.isVisible()) {
+    this._closeAfterSearch = false;
+  } else {
+    this._closeAfterSearch = true;
+    this.menu.show();
+  }
+
+  this.$searchBox.focus();
+  this.$searchBox.select();
+}
+// bit 12 - Set if the result starts with searchString
+// bits 8-11: 8 - number of chunks multiplied by 2 if cases match, otherwise 1.
+// bits 1-7: 127 - length of the entry
+// General scheme: prefer case sensitive matches with fewer chunks, and otherwise
+// prefer shorter matches.
+function relevance(result, searchString) {
+  var relevance = 0;
+  
+  relevance = Math.max(0, 8 - result.match.chunks) << 7;
+  
+  if (result.match.caseMatch) {
+    relevance *= 2;
+  }
+  
+  if (result.match.prefix) {
+    relevance += 2048
+  }
+  
+  relevance += Math.max(0, 255 - result.entry.key.length);
+  
+  return relevance;
+}
+
+Search.prototype.search = function (searchString) {
+  var s = Date.now();
+
+  if (searchString === '') {
+    this.displayResults([]);
+    this.hideSearch();
+    return;
+  } else {
+    this.showSearch();
+  }
+  
+  if (searchString.length === 1) {
+    this.displayResults([]);
+    return;
+  }
+    
+  var results;
+
+  if (/^[\d\.]*$/.test(searchString)) {
+    results = this.biblio.clauses.filter(function (clause) {
+      return clause.number.substring(0, searchString.length) === searchString;
+    }).map(function (clause) {
+      return { entry: clause };
+    });
+  } else {
+    results = [];
+    
+    for (var i = 0; i < this.biblio.length; i++) {
+      var entry = this.biblio[i];
+  
+      var match = fuzzysearch(searchString, entry.key);
+      if (match) {
+        results.push({ entry: entry, match: match });
+      }
+    }
+  
+    results.forEach(function (result) {
+      result.relevance = relevance(result, searchString);
+    });
+    
+    results = results.sort(function (a, b) { return b.relevance - a.relevance });
+
+  }
+
+  if (results.length > 50) {
+    results = results.slice(0, 50);
+  }
+  
+  this.displayResults(results);
+}
+Search.prototype.hideSearch = function () {
+  this.$search.classList.remove('active');
+}
+
+Search.prototype.showSearch = function () {
+  this.$search.classList.add('active');
+}
+
+Search.prototype.selectResult = function () {
+  var $first = this.$searchResults.querySelector('li:first-child a');
+
+  if ($first) {
+    document.location = $first.getAttribute('href');
+  }
+  
+  this.$searchBox.value = '';
+  this.$searchBox.blur();
+  this.displayResults([]);
+  this.hideSearch();
+
+  if (this._closeAfterSearch) {
+    this.menu.hide();
+  }
+}
+
+Search.prototype.displayResults = function (results) {
+  if (results.length > 0) {
+    this.$searchResults.classList.remove('no-results');
+    
+    var html = '<ul>';
+
+    results.forEach(function (result) {
+      var entry = result.entry;
+      var id = entry.id;
+      var cssClass = '';
+      var text = '';
+
+      if (entry.type === 'clause') {
+        var number = entry.number ? entry.number + ' ' : '';
+        text = number + entry.key;
+        cssClass = 'clause';
+        id = entry.id;
+      } else if (entry.type === 'production') {
+        text = entry.key;
+        cssClass = 'prod';
+        id = entry.id;  
+      } else if (entry.type === 'op') {
+        text = entry.key;
+        cssClass = 'op';
+        id = entry.refId;
+      } else if (entry.type === 'term') {
+        text = entry.key;
+        cssClass = 'term';
+        id = entry.id || entry.refId;
+      }
+
+      if (text) {
+        html += '<li class=menu-search-result-' + cssClass + '><a href="#' + id + '">' + text + '</a></li>'
+      }
+    });
+
+    html += '</ul>'
+
+    this.$searchResults.innerHTML = html;
+  } else {
+    this.$searchResults.innerHTML = '';
+    this.$searchResults.classList.add('no-results');
+  }
+}
+
+
 function Menu() {
   this.$toggle = document.getElementById('menu-toggle');
   this.$menu = document.getElementById('menu');
-  this.$searchBox = document.getElementById('menu-search-box');
-  this.$searchResults = document.getElementById('menu-search-results');
-  this.initSearch();
+  this.$toc = document.querySelector('menu-toc > ol');
+  this.$pins = document.querySelector('#menu-pins');
+  this.$pinList = document.getElementById('menu-pins-list');
+  this.$toc = document.querySelector('#menu-toc > ol');
+  this.search = new Search(this);
+  
+  this._pinnedIds = {}; 
+  this.loadPinEntries();
 
   this.$toggle.addEventListener('click', this.toggle.bind(this));
-
-  this.$searchBox.addEventListener('keydown', function (e) {
-    if (e.keyCode === 191 && e.target.value.length === 0) {
-      e.preventDefault();
-      e.stopPropagation();
-    } else if (e.keyCode === 13) {
-      e.preventDefault();
-      e.stopPropagation();
-      this.selectResult();
-    }
-  }.bind(this));
-
-  this.$searchBox.addEventListener('keyup', debounce(function (e) {
-    e.stopPropagation();
-    this.search(e.target.value);
-  }.bind(this)));
-
-
+  document.addEventListener('keydown', this.documentKeydown.bind(this));
   var tocItems = this.$menu.querySelectorAll('#menu-toc li');
   for (var i = 0; i < tocItems.length; i++) {
     var $item = tocItems[i];
@@ -43,8 +242,109 @@ function Menu() {
       event.stopPropagation();
     }.bind(this));
   }
+
+  var container = document.getElementById('spec-container');
+  container.addEventListener('scroll', debounce(function () {
+    this.$activeClause = findActiveClause(container);
+    this.revealInToc(this.$activeClause);
+  }.bind(this)));
+  this.$activeClause = findActiveClause(container);
+
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('utils-pin')) {
+      var id = e.target.parentNode.parentNode.parentNode.parentNode.id;
+      this.togglePinEntry(id);
+    }
+  }.bind(this))
 }
 
+Menu.prototype.documentKeydown = function (e) {
+  e.stopPropagation();
+  if (e.keyCode === 80) {
+    this.togglePinEntry();
+  } else if (e.keyCode > 48 && e.keyCode < 58) {
+    this.selectPin(e.keyCode - 49);
+  }
+}
+
+Menu.prototype.revealInToc = function (path) {
+  var current = this.$toc.querySelectorAll('li.revealed');
+  for (var i = 0; i < current.length; i++) {
+    current[i].classList.remove('revealed');
+    current[i].classList.remove('revealed-leaf');
+  }
+  
+  var current = this.$toc;
+  var index = 0;
+  while (index < path.length) {
+    var children = current.children;
+    for ( var i = 0; i < children.length; i++) {
+      if ( '#' + path[index].id === children[i].children[1].getAttribute('href') ) {
+        children[i].classList.add('revealed');
+        if (index === path.length - 1) {
+          children[i].classList.add('revealed-leaf');
+          var rect = children[i].getBoundingClientRect();
+          this.$toc.getBoundingClientRect().top
+          var tocRect = this.$toc.getBoundingClientRect();
+          if (rect.top + 10 > tocRect.bottom) {
+            this.$toc.scrollTop = this.$toc.scrollTop + (rect.top - tocRect.bottom) + (rect.bottom - rect.top);
+          } else if (rect.top < tocRect.top) {
+            this.$toc.scrollTop = this.$toc.scrollTop - (tocRect.top - rect.top);
+          }
+        }
+        current = children[i].querySelector('ol');
+        index++;
+        break;
+      }      
+    }
+    
+  }
+}
+
+function findActiveClause(root, path) {
+  var clauses = new ClauseWalker(root);
+  var $clause;
+  var found = false;
+  var path = path || [];
+  
+  while ($clause = clauses.nextNode()) {
+    var rect = $clause.getBoundingClientRect();
+    var $header = $clause.children[0];
+    var marginTop = parseInt(getComputedStyle($header)["margin-top"]);
+    
+    if ((rect.top - marginTop) <= 0 && rect.bottom > 0) {
+      found = true;
+      return findActiveClause($clause, path.concat($clause)) || path;
+    }
+  }
+  
+  return path;
+}
+
+function ClauseWalker(root) {
+  var previous;
+  var treeWalker = document.createTreeWalker(
+    root,
+    NodeFilter.SHOW_ELEMENT,
+    {
+      acceptNode: function (node) {
+        if (previous === node.parentNode) {
+          return NodeFilter.FILTER_REJECT;
+        } else {
+          previous = node;
+        }
+        if (node.nodeName === 'EMU-CLAUSE' || node.nodeName === 'EMU-INTRO' || node.nodeName === 'EMU-ANNEX') {
+          return NodeFilter.FILTER_ACCEPT;
+        } else {
+          return NodeFilter.FILTER_SKIP;
+        }
+      }
+    },
+    false
+    );
+  
+  return treeWalker;
+}
 Menu.prototype.toggle = function () {
   this.$menu.classList.toggle('active');
 }
@@ -61,121 +361,71 @@ Menu.prototype.isVisible = function() {
   return this.$menu.classList.contains('active');
 }
 
-Menu.prototype.initSearch = function () {
-  var $biblio = document.getElementById('menu-search-biblio');
-  if (!$biblio) {
-    this.biblio = {};
+Menu.prototype.showPins = function () {
+  this.$pins.classList.add('active');
+}
+
+Menu.prototype.hidePins = function () {
+  this.$pins.classList.remove('active');
+}
+
+Menu.prototype.addPinEntry = function (id) {
+  var entry = this.search.biblio.clausesById[id];
+  var prefix;
+  if (entry.number) {
+    prefix = entry.number + ' ';
   } else {
-    this.biblio = JSON.parse($biblio.textContent);
+    prefix = '';
   }
-
-  this.biblio.ops = this.biblio.filter(function (e) { return e.type === 'op' });
-  this.biblio.clauses = this.biblio.filter(function (e) { return e.type === 'clause' });
-  this.biblio.productions = this.biblio.filter(function (e) { return e.type === 'production' });
-
-  document.addEventListener('keydown', function (e) {
-    if (e.keyCode === 191) {
-      e.preventDefault();
-      e.stopPropagation();
-
-      if(this.isVisible()) {
-        this._closeAfterSearch = false;
-      } else {
-        this._closeAfterSearch = true;
-        this.show();
-      }
-
-      this.show();
-      this.$searchBox.focus();
-    }
-  }.bind(this))
+  this.$pinList.innerHTML += '<li><a href="#' + entry.id + '">' + prefix + entry.titleHTML + '</a></li>';
+  if (Object.keys(this._pinnedIds).length === 0) {
+    this.showPins();
+  }
+  this._pinnedIds[id] = true;
+  this.persistPinEntries();
 }
 
-Menu.prototype.search = function (needle) {
-  if (needle.length < 2) {
-    this.hideSearch();
+Menu.prototype.removePinEntry = function (id) {
+  var item = this.$pinList.querySelector('a[href="#' + id + '"]').parentNode;
+  this.$pinList.removeChild(item);
+  delete this._pinnedIds[id];
+  if (Object.keys(this._pinnedIds).length === 0) {
+    this.hidePins();
+  }
+
+  this.persistPinEntries();
+}
+
+Menu.prototype.persistPinEntries = function () {
+  if (!window.localStorage) return;
+
+  localStorage.pinEntries = JSON.stringify(Object.keys(this._pinnedIds));
+}
+
+Menu.prototype.loadPinEntries = function () {
+  if (!window.localStorage) return;
+  var pinsString = window.localStorage.pinEntries;
+  if (!pinsString) return;
+  var pins = JSON.parse(pinsString);
+  for(var i = 0; i < pins.length; i++) {
+    this.addPinEntry(pins[i]);
+  }
+}
+
+Menu.prototype.togglePinEntry = function (id) {
+  if (!id) {
+    id = this.$activeClause[this.$activeClause.length - 1].id;
+  }
+
+  if (this._pinnedIds[id]) {
+    this.removePinEntry(id);
   } else {
-    this.showSearch();
-  }
-
-  needle = needle.toLowerCase();
-
-  var results = {};
-  var seenClauses = {};
-
-  results.ops = this.biblio.ops.filter(function(op) {
-    return fuzzysearch(needle, op.aoid.toLowerCase());
-  });
-
-  results.ops.forEach(function(op) {
-    seenClauses[op.refId] = true;
-  });
-
-  results.productions = this.biblio.productions.filter(function(prod) {
-    return fuzzysearch(needle, prod.name.toLowerCase());
-  });
-
-  results.clauses = this.biblio.clauses.filter(function(clause) {
-    return !seenClauses[clause.id] && (clause.number.indexOf(needle) === 0 || fuzzysearch(needle, clause.title.toLowerCase()));
-  });
-
-  if (results.length > 50) {
-    results = results.slice(0, 50);
-  }
-
-  this.displayResults(results);
-}
-
-Menu.prototype.displayResults = function (results) {
-  var totalResults = Object.keys(results).reduce(function (sum, record) { return sum + record.length }, 0);
-
-  if (totalResults > 0) {
-    this.$searchResults.classList.remove('no-results');
-
-    var html = '<ul>';
-
-    results.ops.forEach(function (op) {
-      html += '<li class=menu-search-result-op><a href="#' + op.refId + '">' + op.aoid + '</a></li>'
-    });
-
-    results.productions.forEach(function (prod) {
-      html += '<li class=menu-search-result-prod><a href="#' + prod.id + '">' + prod.name + '</a></li>'
-    });
-
-    results.clauses.forEach(function (clause) {
-      html += '<li class=menu-search-result-clause><a href="#' + clause.id + '">' + clause.number + ' ' + clause.title + '</a></li>'
-    })
-
-    html += '</ul>'
-
-    this.$searchResults.innerHTML = html;
-  } else {
-    this.$searchResults.classList.add('no-results');
+    this.addPinEntry(id);
   }
 }
 
-Menu.prototype.hideSearch = function () {
-  this.$searchResults.classList.add('inactive');
-}
-
-Menu.prototype.showSearch = function () {
-  this.$searchResults.classList.remove('inactive');
-}
-
-Menu.prototype.selectResult = function () {
-  var $first = this.$searchResults.querySelector('li:first-child a');
-
-  if ($first) {
-    document.location = $first.getAttribute('href');
-  }
-
-  this.$searchBox.value = '';
-  this.$searchBox.blur();
-  this.hideSearch();
-
-  if (this._closeAfterSearch) {
-    this.hide();
-  }
+Menu.prototype.selectPin = function (num) {
+  document.location = this.$pinList.children[num].children[0].href;
 }
 
 function init() {
@@ -184,9 +434,13 @@ function init() {
 
 document.addEventListener('DOMContentLoaded', init);
 
-function debounce(fn) {
+function debounce(fn, opts) {
+  opts = opts || {};
   var timeout;
-  return function() {
+  return function(e) {
+    if (opts.stopPropagation) {
+      e.stopPropagation();
+    }
     var args = arguments;
     if (timeout) {
       clearTimeout(timeout);
@@ -198,9 +452,64 @@ function debounce(fn) {
   }
 }
 
+
+
+
+var CLAUSE_NODES = ['EMU-CLAUSE', 'EMU-INTRO', 'EMU-ANNEX'];
+function findLocalReferences ($elem) {
+  var name = $elem.innerHTML;
+  var references = [];
+
+  var parentClause = $elem.parentNode;
+  while (parentClause && CLAUSE_NODES.indexOf(parentClause.nodeName) === -1) {
+    parentClause = parentClause.parentNode;
+  }
+
+  if(!parentClause) return;
+
+  var vars = parentClause.querySelectorAll('var');
+
+  for (var i = 0; i < vars.length; i++) {
+    var $var = vars[i];
+
+    if ($var.innerHTML === name) {
+      references.push($var);
+    }
+  }
+
+  return references;
+}
+
+function toggleFindLocalReferences($elem) {
+  var references = findLocalReferences($elem);
+  if ($elem.classList.contains('referenced')) {
+    references.forEach(function ($reference) {
+      $reference.classList.remove('referenced');
+    });
+  } else {
+    references.forEach(function ($reference) {
+      $reference.classList.add('referenced');
+    });
+  }
+}
+
+function installFindLocalReferences () {
+  document.addEventListener('click', function (e) {
+    if (e.target.nodeName === 'VAR') {
+      toggleFindLocalReferences(e.target);
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', installFindLocalReferences);
+
+
+
+
 // The following license applies to the fuzzysearch function
 // The MIT License (MIT)
 // Copyright © 2015 Nicolas Bevacqua
+// Copyright © 2016 Brian Terlson
 // Permission is hereby granted, free of charge, to any person obtaining a copy of
 // this software and associated documentation files (the "Software"), to deal in
 // the Software without restriction, including without limitation the rights to
@@ -217,25 +526,47 @@ function debounce(fn) {
 // COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-function fuzzysearch (needle, haystack) {
+function fuzzysearch (searchString, haystack, caseInsensitive) {
   var tlen = haystack.length;
-  var qlen = needle.length;
+  var qlen = searchString.length;
+  var chunks = 1;
+  var finding = false;
+  var prefix = true;
+  
   if (qlen > tlen) {
     return false;
   }
+  
   if (qlen === tlen) {
-    return needle === haystack;
+    if (searchString === haystack) {
+      return { caseMatch: true, chunks: 1, prefix: true };
+    } else if (searchString.toLowerCase() === haystack.toLowerCase()) {
+      return { caseMatch: false, chunks: 1, prefix: true };
+    } else {
+      return false;
+    }
   }
+  
   outer: for (var i = 0, j = 0; i < qlen; i++) {
-    var nch = needle.charCodeAt(i);
+    var nch = searchString[i];
     while (j < tlen) {
-      if (haystack.charCodeAt(j++) === nch) {
+      var targetChar = haystack[j++];
+      if (targetChar === nch) {
+        finding = true;
         continue outer;
       }
+      if (finding) {
+        chunks++;
+        finding = false;
+      }
     }
-    return false;
+    
+    if (caseInsensitive) { return false }
+    
+    return fuzzysearch(searchString.toLowerCase(), haystack.toLowerCase(), true);
   }
-  return true;
+  
+  return { caseMatch: !caseInsensitive, chunks: chunks, prefix: j <= qlen };
 }
 var CLAUSE_NODES = ['EMU-CLAUSE', 'EMU-INTRO', 'EMU-ANNEX'];
 function findLocalReferences ($elem) {
