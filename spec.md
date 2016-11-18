@@ -3,7 +3,7 @@
 ## global
 The initial value of `global` is the well-known intrinsic object %GlobalThisValue%.
 
-This property has the attributes { [[Writable]]: **true**, [[Enumerable]]: **false**, [[Configurable]]: **true** }.
+This property has the attributes { [[Writable]]: **false**, [[Enumerable]]: **false**, [[Configurable]]: **true** }.
 
 # Well-Known Intrinsic Objects
 <figure>
