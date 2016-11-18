@@ -1,14 +1,35 @@
+html {
+}
+
 body {
+    display: flex;
     font-size: 18px;
     line-height: 1.5;
     font-family: Cambria, Palatino Linotype, Palatino, Liberation Serif, serif;
     padding: 0;
-    color: #333;
-    margin: 0 2% 0 31%;
+    color: #111;
+    margin: 0;
+    overflow: hidden;
+    height: 100%;
+    position:absolute;
+    top:0; left: 0; bottom: 0; right: 0;
+}
+
+#spec-container {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: block;
+    padding-left: 20px;
+    flex-basis: 66%;
+    flex-shrink: 0;
+    flex-grow: 1;
+    box-sizing: border-box;
+    will-change: transform;
 }
 
 body.oldtoc {
-  margin: 0 0 0 150px;
+  margin: 0 auto;
 }
 
 a {
@@ -90,12 +111,6 @@ emu-eqn div:first-child {
   margin-left: -2em;
 }
 
-emu-eqn.inline {
-  display: inline;
-  margin: 0;
-  white-space: nowrap;
-}
-
 emu-note {
     display: block;
     margin: 1em 0 1em 6em;
@@ -123,6 +138,7 @@ emu-production {
     display: block;
     margin-top: 1em;
     margin-bottom: 1em;
+    margin-left: 5ex;
 }
 
 
@@ -231,40 +247,63 @@ h1.shortname {
   font-size: 1.5em;
   margin: 0;
 }
+
 h1.version {
   color: #f60;
   font-size: 1.5em;
   margin: 0;
 }
+
 h1.title {
   margin-top: 0;
   color: #f60;
 }
+
 h1, h2, h3, h4, h5, h6 {
     position: relative;
 }
+
 h1 .secnum {
-    position: absolute;
-    text-align: right;
-    right: 100%;
-    margin-right: 1ex;
-    white-space: nowrap;
+  text-decoration: none;
+  margin-right: 10px;
 }
 
-h1 { font-size: 2.67em; }
+h1 span.title {
+  order: 2;
+}
+
+
+h1 { font-size: 2.67em; margin-top: 2em; margin-bottom: 1em; line-height: 1em;}
 h2 { font-size: 2em; }
 h3 { font-size: 1.56em; }
 h4 { font-size: 1.25em; }
 h5 { font-size: 1.11em; }
 h6 { font-size: 1em; }
 
-h1 span.utils,
-h2 span.utils,
-h3 span.utils,
-h4 span.utils,
-h5 span.utils,
-h6 span.utils {
-  padding-left: 1em;
+h1:hover span.utils {
+  display: block;
+}
+
+span.utils {
+  font-size: 18px;
+  line-height: 18px;
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  font-weight: normal;
+}
+
+span.utils:before {
+    content: "⤷";
+    display: inline-block;
+    padding: 0 5px;
+}
+
+span.utils > * {
+  display: inline-block;
+  margin-right: 20px;
 }
 
 h1 span.utils span.anchor a,
@@ -273,8 +312,8 @@ h3 span.utils span.anchor a,
 h4 span.utils span.anchor a,
 h5 span.utils span.anchor a,
 h6 span.utils span.anchor a {
-  color: #ccc;
   text-decoration: none;
+  font-variant: small-caps;
 }
 
 h1 span.utils span.anchor a:hover,
@@ -353,31 +392,19 @@ table.lightweight-table td, table.lightweight-table th {
 }
 
 /* diff styles */
-ins, tr.ins > td, li.ins {
+ins {
     background-color: #e0f8e0;
     text-decoration: none;
     border-bottom: 1px solid #396;
 }
 
-ins.block {
-    display: block;
-}
-
-del, tr.del > td, li.del {
+del {
     background-color: #fee;
-    text-decoration: line-through;
 }
 
-del.block {
-    display: block;
-}
-
-tr.ins > td > ins, li.ins > ins {
-  border: 0;
-}
-
-/* Grammar Diff Styles */
-emu-grammar > ins, emu-grammar > del, emu-production > ins, emu-production > del {
+ins.block, del.block,
+emu-production > ins, emu-production > del,
+emu-grammar > ins, emu-grammar > del {
   display: block;
 }
 
@@ -392,9 +419,7 @@ emu-grammar > ins, emu-grammar > del, emu-production > ins, emu-production > del
   height: 1.5em;
   z-index: 3;
   visibility: hidden;
-
-  background-color: #111;
-  color: #B6C8E4;
+  color: #1567a2;
 
   line-height: 1.5em;
   text-align: center;
@@ -409,32 +434,70 @@ emu-grammar > ins, emu-grammar > del, emu-production > ins, emu-production > del
 }
 
 #menu {
-  position: fixed;
-  left: 0;
-  top: 0;
   height: 100%;
-  width: 24%;
-  z-index: 2;
-  overflow-x: hidden;
-  overflow-y: auto;
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: 33%;
+  max-width: 500px;
   box-sizing: border-box;
-
-  background-color: #111;
-
+  background-color: #ddd;
+  overflow: hidden;
   transition: opacity 0.1s linear;
+  padding: 0 5px;
+}
+
+#menu a {
+  color: #1567a2;
 }
 
 #menu.active {
-  display: block;
+  display: flex;
   opacity: 1;
+  z-index: 2;
 }
 
+#menu-pins {
+  flex-grow: 1;
+  display: none;
+}
+
+#menu-pins.active {
+  display: block;
+}
+
+#menu-pins-list {
+  margin: 0;
+  padding: 0;
+  counter-reset: pins-counter;
+}
+
+#menu-pins-list > li:before {
+  content: counter(pins-counter);
+  counter-increment: pins-counter;
+  display: inline-block;
+  width: 25px;
+  text-align: center;
+  border: 1px solid #bbb;
+  padding: 2px;
+  margin: 4px;
+  box-sizing: border-box;
+  line-height: 1em;
+  background-color: #ccc;
+  border-radius: 4px;
+}
 #menu-toc > ol {
+  padding: 0;
+  flex-grow: 1;
+}
+
+#menu-toc > ol li {
   padding: 0;
 }
 
 #menu-toc > ol , #menu-toc > ol ol {
   list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
 #menu-toc > ol ol {
@@ -451,9 +514,10 @@ emu-grammar > ins, emu-grammar > del, emu-production > ins, emu-production > del
   display: inline-block;
   transform: rotate(-45deg) translate(-5px, -5px);
   transition: transform 0.1s ease;
-  width: 1em;
+  text-align: center;
+  width: 20px;
 
-  color: #555F6E;
+  color: #aab;
 
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -467,7 +531,7 @@ emu-grammar > ins, emu-grammar > del, emu-production > ins, emu-production > del
 
 #menu-toc .item-toggle-none {
   display: inline-block;
-  width: 1em;
+  width: 20px;
 }
 
 #menu-toc li.active > .item-toggle {
@@ -482,50 +546,197 @@ emu-grammar > ins, emu-grammar > del, emu-production > ins, emu-production > del
   display: block;
 }
 
+#menu-toc li.revealed > a {
+  background-color: #bbb;
+  font-weight: bold;
+  /*
+  background-color: #222;
+  color: #c6d8e4;
+  */
+}
+
+#menu-toc li.revealed-leaf> a {
+  color: #206ca7;
+  /*
+  background-color: #222;
+  color: #c6d8e4;
+  */
+}
+
+#menu-toc li.revealed > .item-toggle {
+  transform: rotate(45deg) translate(-5px, -5px);
+}
+
+#menu-toc li.revealed > ol {
+  display: block;
+}
+
 #menu-toc li > a {
-  padding-left: 0.25em;
-  color: #B6C8E4;
+  padding: 2px 5px;
+}
+
+
+#menu {
+  display: flex;
+  flex-direction: column;
+}
+
+#menu > * {
+  margin-bottom: 5px;
+}
+
+.menu-pane-header {
+  padding: 0 5px;
+  text-transform: uppercase;
+  background-color: #aaa;
+  color: #335;
+  font-weight: bold;
+  letter-spacing: 2px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  font-size: 0.8em;
+}
+
+#menu-toc {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+#menu-toc ol.toc {
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 #menu-search {
-  color: #B6C8E4;
+  position: relative;
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 100%;
+  
+  display: flex;
+  flex-direction: column;
+  
+  max-height: 300px;
 }
 
-#menu-search-box {
-  display: block;
-  width: 90%;
-  margin: 5px auto;
-  font-size: 1em;
-  padding: 2px;
-}
-
-#menu-search-results.inactive {
+#menu-trace-list {
   display: none;
 }
 
+#menu-search-box {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  margin: 5px 0 0 0;
+  font-size: 1em;
+  padding: 2px;
+  background-color: #bbb;
+  border: 1px solid #999;
+}
+
+#menu-search-results {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+li.menu-search-result-clause:before {
+    content: 'clause';
+    width: 40px;
+    display: inline-block;
+    text-align: right;
+    padding-right: 1ex;
+    color: #666;
+    font-size: 75%;
+}
+li.menu-search-result-op:before {
+    content: 'op';
+    width: 40px;
+    display: inline-block;
+    text-align: right;
+    padding-right: 1ex;
+    color: #666;
+    font-size: 75%;
+}
+
+li.menu-search-result-prod:before {
+    content: 'prod';
+    width: 40px;
+    display: inline-block;
+    text-align: right;
+    padding-right: 1ex;
+    color: #666;
+    font-size: 75%
+}
+
+
+li.menu-search-result-term:before {
+    content: 'term';
+    width: 40px;
+    display: inline-block;
+    text-align: right;
+    padding-right: 1ex;
+    color: #666;
+    font-size: 75%
+}
+
 #menu-search-results ul {
-  list-style-type: square;
-  padding: 0 0 0 35px;
+  padding: 0 5px;
   margin: 0;
 }
 
 #menu-search-results li {
   white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-#menu-search-results a {
-  color: #b6c8e4;
+
+#menu-trace-list {
+  counter-reset: item;
+  margin: 0 0 0 20px;
+  padding: 0;
+}
+#menu-trace-list li {
+  display: block;
+  white-space: nowrap;
 }
 
-@media (max-width: 1366px) {
+#menu-trace-list li .secnum:after {
+  content: " ";
+}
+#menu-trace-list li:before {
+    content: counter(item) " ";
+    background-color: #222;
+    counter-increment: item;
+    color: #999;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    display: inline-block;
+    text-align: center;
+    margin: 2px 4px 2px 0;
+}
+
+@media (max-width: 1000px) {
   body {
-    margin: 0 0 0 150px;
+    margin: 0 0 0 60px;
+    display: block;
   }
 
   #menu {
     display: none;
     padding-top: 3em;
-    width: 323px;
+    width: 450px;
+  }
+
+  #menu.active {
+    position: fixed;
+    height: 100%;
+    left: 0;
+    top: 0;
+    right: 300px;
   }
 
   #menu-toggle {
@@ -542,92 +753,8 @@ emu-grammar > ins, emu-grammar > del, emu-production > ins, emu-production > del
     width: 100%;
   }
 
-  h1 .secnum {
-    display: inline;
-    position: inherit;
-    left: 0;
-    right: 0;
-  }
 
   h1 .secnum:empty {
     margin: 0; padding: 0;
   }
-}
-
-@media print {
-  /* hide anchor and other utils */
-  span.utils {
-    display: none;
-  }
-
-  emu-annex > h1 {
-    text-align: center;
-  }
-
-  emu-annex > h1 .secnum {
-    display: block;
-    position: inherit;
-    right: inherit;
-    text-align: center;
-    margin-right: 0;
-  }
-
-  emu-annex > h1 .secnum::before {
-    content: "Annex ";
-  }
-
-  emu-annex[normative] > h1::after {
-    content: "(normative)";
-    display: block;
-    font-weight: normal;
-    color: #666;
-  }
-
-  emu-annex:not([normative]) > h1::after {
-    content: "(informative)";
-    font-weight: normal;
-    display: block;
-    color: #666;
-  }
-
-  /* reset styles on nested annexes */
-  emu-annex emu-annex > h1 {
-    text-align: left;
-  }
-
-  emu-annex emu-annex h1::after {
-    content: none !important;
-  }
-
-  emu-annex emu-annex > h1 .secnum {
-    position: absolute;
-    right: 100%;
-    text-align: right;
-    margin-right: 1ex;
-  }
-
-  emu-annex emu-annex > h1 .secnum::before {
-    content: none;
-  }
-
-  /* page break controls */
-  emu-intro > h1,
-  emu-annex > h1,
-  emu-toc div {
-    page-break-before: always;
-  }
-
-  /* turn off page breaks in nested clauses */
-  emu-intro emu-intro > h1,
-  emu-annex emu-annex > h1 {
-    page-break-before: auto;
-  }
-
-  h1, h2, h3, h4, h5,
-  emu-figure > figure,
-  emu-table > figure,
-  emu-table > table {
-    page-break-inside: avoid;
-  }
-
 }
