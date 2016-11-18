@@ -40,7 +40,7 @@ ES6/ES2015 does not account for the `Window`/`WindowProxy` structure, and simply
 
 ## SES interaction
 
-For Secure ECMAScript, it is important that all references to the global object be spoof-able and capable of being locked down, so that each context gets its own shadow global context. Additionally, references to the global object should not be reachable from other ECMAScript intrinsic objects, which SES would like to simply recursively freeze. In this proposal, `global` is a non-writable, but configurable property of the global object, so it should meet SES requirements.
+For Secure ECMAScript, it is important that all references to the global object be spoof-able and capable of being locked down, so that each context gets its own shadow global context. Additionally, references to the global object should not be reachable from other ECMAScript intrinsic objects, which SES would like to simply recursively freeze. In this proposal, `global` is a writable and configurable property of the global object, so it should meet SES requirements.
 
 ## Naming
 ~~There is desire to reify one of the existing global property names, particularly `global` or `window`, instead of `System.global`. Further research will be done to determine if either of these two options will or will not break existing code doing runtime environment detection.~~ Further research has determined that using `global` will not break existing code.

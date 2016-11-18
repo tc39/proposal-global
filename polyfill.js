@@ -6,7 +6,7 @@
 				configurable: true,
 				enumerable: false,
 				value: global,
-				writable: false
+				writable: true
 			});
 		} else {
 			global.global = global;
