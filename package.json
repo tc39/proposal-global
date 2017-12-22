@@ -3,7 +3,7 @@
 	"version": "0.0.0",
 	"description": "ECMAScript spec proposal for `global`",
 	"scripts": {
-		"build": "ecmarkup spec.emu --js=spec.js --css=spec.css | js-beautify -f - --type=html -t > index.html",
+		"build": "ecmarkup spec.emu | js-beautify -f - --type=html -t > index.html",
 		"prepublish": "npm run build && echo >&2 'no publishing' && exit 255"
 	},
 	"repository": {
@@ -31,7 +31,7 @@
 	"homepage": "https://github.com/ljharb/proposal-global#readme",
 	"dependencies": {},
 	"devDependencies": {
-		"ecmarkup": "^3.7.1",
-		"js-beautify": "^1.6.4"
+		"ecmarkup": "^3.12.0",
+		"js-beautify": "^1.7.5"
 	}
 }
