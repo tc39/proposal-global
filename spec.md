@@ -1,7 +1,7 @@
 # Other Properties of the Global Object
 
 ## global
-The initial value of `global` is the well-known intrinsic object %GlobalThisValue%.
+The initial value of `GLOBAL_PLACEHOLDER` is the well-known intrinsic object %GlobalThisValue%.
 
 This property has the attributes { [[Writable]]: **true**, [[Enumerable]]: **false**, [[Configurable]]: **true** }.
 
@@ -22,8 +22,8 @@ This property has the attributes { [[Writable]]: **true**, [[Enumerable]]: **fal
       </tr>
       <tr>
         <td>%GlobalThisValue%</td>
-        <td><code>global</code></td>
-        <td>The initial value of the `global` property of the global object</td>
+        <td><code>GLOBAL_PLACEHOLDER</code></td>
+        <td>The initial value of the `GLOBAL_PLACEHOLDER` property of the global object</td>
       </tr>
       <tr>
         <td>%Int8Array%</td>

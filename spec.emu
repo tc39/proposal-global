@@ -14,8 +14,8 @@ contributors: Jordan Harband
 <emu-clause id="sec-other-properties-of-the-global-object">
 	<h1>Other Properties of the Global Object</h1>
 	<emu-clause id="sec-other-properties-of-the-global-object-global">
-		<h1>global</h1>
-		<p>The initial value of `global` is the well-known intrinsic object <dfn>%GlobalThisValue%</dfn>.</p>
+		<h1>GLOBAL_PLACEHOLDER</h1>
+		<p>The initial value of `GLOBAL_PLACEHOLDER` is the well-known intrinsic object <dfn>%GlobalThisValue%</dfn>.</p>
 		<p>This property has the attributes { [[Writable]]: *true*, [[Enumerable]]: *false*, [[Configurable]]: *true* }.</p>
 	</emu-clause>
 </emu-clause>
@@ -37,8 +37,8 @@ contributors: Jordan Harband
 				</tr>
 				<tr>
 					<td><ins>%GlobalThisValue%</ins></td>
-					<td><ins><code>global</code></ins></td>
-					<td><ins>The initial value of the <code>global</code> property of the global object</ins></td>
+					<td><ins><code>GLOBAL_PLACEHOLDER</code></ins></td>
+					<td><ins>The initial value of the <code>GLOBAL_PLACEHOLDER</code> property of the global object</ins></td>
 				</tr>
 				<tr>
 					<td>%Int8Array%</td>
