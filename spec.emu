@@ -8,6 +8,9 @@ title: global
 stage: 3
 contributors: Jordan Harband
 </pre>
+<p>
+<b>Note</b>: due to <a href="https://github.com/tc39/proposal-global/issues/20">web compatibility concerns</a>, this proposal is on hold pending a new global identifier name.
+</p>
 <emu-clause id="sec-other-properties-of-the-global-object">
 	<h1>Other Properties of the Global Object</h1>
 	<emu-clause id="sec-other-properties-of-the-global-object-global">
