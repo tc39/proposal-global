@@ -6,17 +6,19 @@ Spec drafted by [@ljharb](https://github.com/ljharb).
 This proposal is currently [stage 3](https://github.com/tc39/ecma262) of the [process](https://tc39.github.io/process-document/); however, due to [web compatibility concerns](https://github.com/tc39/proposal-global/issues/20), it is on hold pending a new global identifier name.
 
 ## Rationale
-It is difficult to write portable ECMAScript code which accesses the global object. On the web, it is accessible as `window` or `self` or `frames`; on node.js, it is `global`; neither of those is available in a shell like V8's `d8` or `jsc`. In a standalone function call in sloppy mode, it is `this`; in strict code within a function, that can still be accessed by `Function('return this')()`, but that form is inaccessible with some CSP settings, such as within Chrome Apps. Below is some code from the wild to get the global object, passed in as the single argument to an IIFE, which works for most cases but won't actually work in d8 when in strict mode inside a function (it could be fixed using the new Function trick):
+It is difficult to write portable ECMAScript code which accesses the global object. On the web, it is accessible as `window` or `self` or `this` or `frames`; on node.js, it is `global` or `this`; among those, only `this` is available in a shell like V8's `d8` or JavaScriptCore's `jsc`. In a standalone function call in sloppy mode, `this` works too, but it's `undefined` in modules or in strict mode within a function. In such contexts, the global object can still be accessed by `Function('return this')()`, but that form is inaccessible with some CSP settings, such as within Chrome Apps. Below is some code from the wild to get the global object, passed in as the single argument to an IIFE, which works for most cases but won't actually work in `d8` when in a module or in strict mode inside a function (which could be fixed using the `Function` trick):
 ```js
-// If we're in a browser, the global namespace is named 'window'. If we're
-// in node, it's named 'global'. If we're in a shell, 'this' might work.
-(typeof window !== "undefined"
-   ? window
-   : (typeof process === 'object' &&
-      typeof require === 'function' &&
-      typeof global === 'object')
-     ? global
-     : this);
+function foo() {
+	// If we're in a browser, the global namespace is named 'window'. If we're
+	// in node, it's named 'global'. If we're in a shell, 'this' might work.
+	(typeof window !== "undefined"
+		? window
+		: (typeof process === 'object' &&
+		   typeof require === 'function' &&
+		   typeof global === 'object')
+			? global
+			: this);
+}
 ```
 
 In addition, the `es6-shim` had to switch from `Function('return this')()` due to [CSP concerns](https://github.com/paulmillr/es6-shim/issues/301), such that the current [check](https://github.com/paulmillr/es6-shim/commit/2367e0953edd01ae9a5628e1f47cf14b0377a7d6) to handle browsers, node, web workers, and frames is:
