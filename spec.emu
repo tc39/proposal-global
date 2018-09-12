@@ -8,14 +8,11 @@ title: global
 stage: 3
 contributors: Jordan Harband
 </pre>
-<p>
-<b>Note</b>: due to <a href="https://github.com/tc39/proposal-global/issues/20">web compatibility concerns</a>, this proposal is on hold pending a new global identifier name.
-</p>
 <emu-clause id="sec-other-properties-of-the-global-object">
 	<h1>Other Properties of the Global Object</h1>
 	<emu-clause id="sec-other-properties-of-the-global-object-global">
-		<h1>GLOBAL_PLACEHOLDER</h1>
-		<p>The initial value of `GLOBAL_PLACEHOLDER` is the well-known intrinsic object <dfn>%GlobalThisValue%</dfn>.</p>
+		<h1>globalThis</h1>
+		<p>The initial value of `globalThis` is the well-known intrinsic object <dfn>%GlobalThisValue%</dfn>.</p>
 		<p>This property has the attributes { [[Writable]]: *true*, [[Enumerable]]: *false*, [[Configurable]]: *true* }.</p>
 	</emu-clause>
 </emu-clause>
@@ -37,8 +34,8 @@ contributors: Jordan Harband
 				</tr>
 				<tr>
 					<td><ins>%GlobalThisValue%</ins></td>
-					<td><ins><code>GLOBAL_PLACEHOLDER</code></ins></td>
-					<td><ins>The initial value of the <code>GLOBAL_PLACEHOLDER</code> property of the global object</ins></td>
+					<td><ins><code>globalThis</code></ins></td>
+					<td><ins>The initial value of the <code>globalThis</code> property of the global object</ins></td>
 				</tr>
 				<tr>
 					<td>%Int8Array%</td>

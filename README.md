@@ -1,5 +1,5 @@
 # [global](https://www.npmjs.com/package/system.global)
-ECMAScript Proposal, specs, and reference implementation for `GLOBAL_PLACEHOLDER`
+ECMAScript Proposal, specs, and reference implementation for `globalThis`
 
 Spec drafted by [@ljharb](https://github.com/ljharb).
 
