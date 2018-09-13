@@ -3,7 +3,7 @@ ECMAScript Proposal, specs, and reference implementation for `globalThis`
 
 Spec drafted by [@ljharb](https://github.com/ljharb).
 
-This proposal is currently [stage 3](https://github.com/tc39/ecma262) of the [process](https://tc39.github.io/process-document/); however, due to [web compatibility concerns](https://github.com/tc39/proposal-global/issues/20), it is on hold pending a new global identifier name.
+This proposal is currently [stage 3](https://github.com/tc39/ecma262) of the [process](https://tc39.github.io/process-document/).
 
 ## Rationale
 It is difficult to write portable ECMAScript code which accesses the global object. On the web, it is accessible as `window` or `self` or `this` or `frames`; on node.js, it is `global` or `this`; among those, only `this` is available in a shell like V8's `d8` or JavaScriptCore's `jsc`. In a standalone function call in sloppy mode, `this` works too, but it's `undefined` in modules or in strict mode within a function. In such contexts, the global object can still be accessed by `Function('return this')()`, but that form is inaccessible with some CSP settings, such as within Chrome Apps. Below is some code from the wild to get the global object, passed in as the single argument to an IIFE, which works for most cases but won't actually work in `d8` when in a module or in strict mode inside a function (which could be fixed using the `Function` trick):
