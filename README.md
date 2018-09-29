@@ -1,4 +1,4 @@
-# [global](https://www.npmjs.com/package/system.global)
+# [global](https://www.npmjs.com/package/globalthis)
 ECMAScript Proposal, specs, and reference implementation for `globalThis`
 
 Spec drafted by [@ljharb](https://github.com/ljharb).
