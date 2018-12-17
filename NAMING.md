@@ -114,10 +114,10 @@ The constraints listed here use the word “must” to indicate an absolute rest
 ### How we came to `globalThis`:
 
 Given that `global` ended up failing due to web compatibility issues, browsers were hesitant to ship another identifier that might break sites - so the next step was to gather usage data. Doing so presents a cost to browsers, and so I was requested to prune the list down to 3 or 4 options - a short list. While I’d hoped to gather as much data as possible, as the proposal champion, I had to make a choice: so I chose these names, with these reasons:
-`global`: as a control, and to provide appropriate scale for the other names
-`globals`: my personal favorite, since my first choice was unavailable
-`globalThis`: while this is not a name in common usage, it matches the spec’s existing terminology, and accurately describes the global.
-`globalObject`: despite the [constraint](#related-specs) noted above, this name seemed closest to common usage in the community, and I wanted to either decisively rule it out, or attempt to persuade the committee that the collision with the HTML spec might be worth it.
+- `global`: as a control, and to provide appropriate scale for the other names
+- `globals`: my personal favorite, since my first choice was unavailable
+- `globalThis`: while this is not a name in common usage, it matches the spec’s existing terminology, and accurately describes the global.
+- `globalObject`: despite the [constraint](#related-specs) noted above, this name seemed closest to common usage in the community, and I wanted to either decisively rule it out, or attempt to persuade the committee that the collision with the HTML spec might be worth it.
 
 The results confirmed that `global` was out, and that of the remaining three names, `globals` had significantly more usage than the other two (albeit, much less than `global`), and `globalThis` had less usage than `globalObject`. I presented these findings to the committee with a recommendation to go with `globalThis`, and the recommendation received consensus: [notes part 1](https://github.com/rwaldron/tc39-notes/blob/c2aaad7ef4a348b7ab019cca9f19b07f7484478a/es9/2018-07/july-24.md#new-name-for-global) / [notes part 2](https://github.com/rwaldron/tc39-notes/blob/c2aaad7ef4a348b7ab019cca9f19b07f7484478a/es9/2018-07/july-25.md#revisit-global-name). Within a month, v8 had announced its [intent to ship](https://twitter.com/intenttoship/status/1035084956660391936).
 
