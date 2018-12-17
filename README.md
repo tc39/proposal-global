@@ -49,6 +49,8 @@ For Secure ECMAScript, it is important that all references to the global object 
 
 After some data-gathering to determine web compatibility of a short list of choices, we settled on `globalThis`, as this name is both highly likely to be web compatible, and also maps to the concept of being the “global `this` value” (and not the “global object”, per [above](https://github.com/tc39/proposal-global#html-and-the-windowproxy)).
 
+For a more detailed list of constraints, see [NAMING.md](NAMING.md).
+
 ## Spec
 You can view the spec in [markdown format](spec.md) or rendered as [HTML](http://tc39.github.io/proposal-global/).
 
