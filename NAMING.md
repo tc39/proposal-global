@@ -109,7 +109,7 @@ The constraints listed here use the word “must” to indicate an absolute rest
    - `globalValue`
    - `theGlobal`: there's no precedent for using a definite article in a name (and it would make things more difficult for non-native-English speakers, many of whom are members of TC39)
    - `globalVars`: this isn’t accurate because it includes function declarations and can include properties added without using `var`.
-   - `__global__`: There exists the pattern of using `__` in other places, most notably `__proto__`, but this was a legacy pattern, and one that the committee did not want to repeat.
+   - `__global__`: There exists the pattern of using `__` in other places, most notably `__proto__` - but this was a legacy pattern, and one that the committee did not want to repeat. Node.js uses the double underscore for `__dirname` and `__filename` in CommonJS modules, but this pattern will no longer be used in ES Modules. Python uses the double underscore for built-ins that need to avoid conflicts with userland, such as `__init__`.
 
 ### How we came to `globalThis`:
 
