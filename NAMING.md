@@ -83,7 +83,7 @@ The constraints listed here use the word “must” to indicate an absolute rest
         - `shell`
         - `container`
 
-    1.  Names that start with a capital -- it would be strange to call something an "instance" that was never constructed; there's no precedent for using a definite article in a name
+    1.  Names that start with a capital - by overwhelming community convention, names that start with a capital letter (also called “PascalCase”) are typically used only for constructor functions, or for namespaces (like `Math`, `Reflect`, `JSON`, etc) - objects that group related values under one containing object. Since the global is not a function, and is not a container for related objects following a theme, some on the committee felt that these names would not be appropriate.
 
         #### Names ruled out by this restriction:
         - `Global`
