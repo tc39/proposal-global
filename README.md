@@ -42,8 +42,8 @@ The distinction is observable in the following scenario, with files `parent.html
 
 ```html
 <script>
-  window.foo = 'a';
-  window.getGlobalThis = () => globalThis;
+  globalThis.foo = 'a';
+  globalThis.getGlobalThis = () => globalThis;
 </script>
 ```
 
@@ -51,33 +51,35 @@ The distinction is observable in the following scenario, with files `parent.html
 
 ```html
 <script>
-  window.getGlobalThis = () => globalThis;
+  globalThis.getGlobalThis = () => globalThis;
 </script>
 ```
 
-`parent.html`'s source code is:
+`parent.html`’s source code is:
 
 ```html
 <iframe src="frame-a.html"></iframe>
 <script>
-  const frame = frames[0];
-  // The global variable `foo` exists.
-  console.assert(frame.foo === 'a');
-  const before = frame.getGlobalThis();
-  frame.src = 'b.html';
-  frame.onload = () => {
-    // The global variable `foo` has disappeared.
-    console.assert(frame.foo === undefined);
-    const after = frame.getGlobalThis();
-    // But, `globalThis` still has the same identity.
-    console.assert(before === after);
+  const iframe = document.querySelector('iframe');
+  iframe.onload = () => {
+    // The global variable `foo` exists.
+    console.assert(frames[0].foo === 'a');
+    const before = frames[0].getGlobalThis();
+    iframe.onload = () => {
+      // The global variable `foo` has disappeared.
+      console.assert(frames[0].foo === undefined, 'The global object changes during navigation');
+      const after = frames[0].getGlobalThis();
+      // But, `globalThis` still has the same identity.
+      console.assert(before === after, 'globalThis maintains its identity during navigation');
+    };
+    iframe.src = 'frame-b.html';
   };
 </script>
 ```
 
-This shows that the global variable `foo` was being stored on the actual global object, which has changed during navigation, but `globalThis` has not changed during navigation. Therefore, `globalThis` is not the global object.
+[This demo](https://bead-pancake.glitch.me/) shows that the global variable `foo` was being stored on the actual global object, which has changed during navigation, but `globalThis` has not changed during navigation. Therefore, `globalThis` is not the global object.
 
-Thus, `globalThis` is observably different from “the global object”, which is not directly accessible from JavaScript.
+Thus, `globalThis` is observably different from “the global object”, which is not directly accessible from JavaScript. [In web browsers, it’s even possible that (even in the global scope), `foo !== globalThis.foo`.](https://concise-walker.glitch.me/)
 
 ES6/ES2015 does not account for the `Window`/`WindowProxy` structure, and simply refers to ”the global object” directly. This specification does the same. If the ECMAScript specification is changed for top-level `this` to account for `WindowProxy`, then the change should also apply to the definition of this proposal.
 
