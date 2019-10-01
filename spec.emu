@@ -5,7 +5,7 @@
 <script src="./spec.js"></script>
 <pre class="metadata">
 title: global
-stage: 3
+stage: 4
 contributors: Jordan Harband
 </pre>
 <emu-clause id="sec-other-properties-of-the-global-object">
