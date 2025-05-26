@@ -1,0 +1,6 @@
+<h1>a</h1>
+<script>
+  foo = 'a'; // or globalThis.foo = 'a', doesn't matter
+  top.getFooAsGlobalBinding = () => foo;
+  top.getFooAsGlobalThisProperty = () => globalThis.foo;
+</script>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>globalThis ≠ “the global object”</title>
+<p>This demo shows that <code>globalThis</code> is not “the global object”. <a href="https://github.com/tc39/proposal-global/blob/gh-pages/html-windowproxy/example-1/index.html">View source</a></p>
+<iframe src="frame-a.html"></iframe>
+<p>Demo by <a href="https://mathiasbynens.be/">Mathias</a></p>
+<script>
+  const iframe = document.querySelector('iframe');
+  iframe.onload = () => {
+    // The global variable `foo` exists.
+    console.assert(frames[0].foo === 'a');
+    const before = frames[0].getGlobalThis();
+    iframe.onload = () => {
+      // The global variable `foo` has disappeared.
+      console.assert(frames[0].foo === undefined, 'The global object changes during navigation');
+      const after = frames[0].getGlobalThis();
+      // But, `globalThis` still has the same identity.
+      console.assert(before === after, 'globalThis maintains its identity during navigation');
+    };
+    iframe.src = 'frame-b.html';
+  };
+</script>

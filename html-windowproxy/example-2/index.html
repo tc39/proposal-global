@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>globalThis ≠ “the global object”</title>
+<p>This demo shows that even in the global scope, it’s possible that <code>foo !== globalThis.foo</code>. <a href="https://github.com/tc39/proposal-global/blob/gh-pages/html-windowproxy/example-2/index.html">View source</a></p>
+<iframe src="frame-a.html"></iframe>
+<p>Demo by <a href="https://mathiasbynens.be/">Mathias</a></p>
+<script>
+  const iframe = document.querySelector('iframe');
+  iframe.onload = () => {
+    console.assert(getFooAsGlobalBinding() === 'a');
+    console.assert(getFooAsGlobalThisProperty() === 'a');
+    iframe.onload = () => {
+      console.assert(getFooAsGlobalBinding() === 'a');
+      console.assert(getFooAsGlobalThisProperty() === 'b');
+      console.assert(getFooAsGlobalBinding() !== getFooAsGlobalThisProperty(), 'foo != globalThis.foo');
+    };
+    iframe.src = 'frame-b.html';
+  };
+</script>
