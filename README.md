@@ -77,9 +77,9 @@ The distinction is observable in the following scenario, with files `parent.html
 </script>
 ```
 
-[This demo](https://bead-pancake.glitch.me/) shows that the global variable `foo` was being stored on the actual global object, which has changed during navigation, but `globalThis` has not changed during navigation. Therefore, `globalThis` is not the global object.
+[This demo](https://tc39.es/proposal-global/html-windowproxy/example-1/) shows that the global variable `foo` was being stored on the actual global object, which has changed during navigation, but `globalThis` has not changed during navigation. Therefore, `globalThis` is not the global object.
 
-Thus, `globalThis` is observably different from “the global object”, which is not directly accessible from JavaScript. [In web browsers, it’s even possible that (even in the global scope), `foo !== globalThis.foo`.](https://concise-walker.glitch.me/)
+Thus, `globalThis` is observably different from “the global object”, which is not directly accessible from JavaScript. [In web browsers, it’s even possible that (even in the global scope), `foo !== globalThis.foo`.](https://tc39.es/proposal-global/html-windowproxy/example-2/)
 
 ES6/ES2015 does not account for the `Window`/`WindowProxy` structure, and simply refers to ”the global object” directly. This specification does the same. If the ECMAScript specification is changed for top-level `this` to account for `WindowProxy`, then the change should also apply to the definition of this proposal.
 
